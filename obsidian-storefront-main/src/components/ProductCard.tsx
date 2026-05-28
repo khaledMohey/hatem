@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 export function ProductCard({ product }: { product: Product }) {
   const [colorIdx, setColorIdx] = useState(0);
-  const { addToCart, setCartOpen, wishlist, toggleWishlist } = useStore();
+  const { addToCart, wishlist, toggleWishlist } = useStore();
   const color = product.colors[colorIdx];
   const onSale = !!product.salePrice;
   const wished = wishlist.includes(product.id);
@@ -80,8 +80,7 @@ export function ProductCard({ product }: { product: Product }) {
           <button
             onClick={() => {
               addToCart({ productId: product.id, color: color.name, qty: 1 });
-              setCartOpen(true);
-              toast.success(`Added ${product.name}`);
+              toast.success(`Added ${product.name} to cart`);
             }}
             className="rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition"
           >

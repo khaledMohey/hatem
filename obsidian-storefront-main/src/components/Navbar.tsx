@@ -8,7 +8,6 @@ const links = [
   { to: "/products", label: "Shop" },
   { to: "/products?category=T-Shirt", label: "T-Shirt" },
   { to: "/products?sale=1", label: "Sale" },
-  { to: "/admin", label: "Admin" },
 ];
 
 export function Navbar() {

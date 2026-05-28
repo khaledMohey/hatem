@@ -18,7 +18,7 @@ export const Route = createFileRoute("/products/$id")({
 
 function ProductDetail() {
   const { id } = Route.useParams();
-  const { products, addToCart, setCartOpen, wishlist, toggleWishlist } = useStore();
+  const { products, addToCart, wishlist, toggleWishlist } = useStore();
   const product = products.find((p) => p.id === id);
   const [colorIdx, setColorIdx] = useState(0);
   const [size, setSize] = useState<string | undefined>(undefined);
@@ -128,8 +128,7 @@ function ProductDetail() {
               onClick={() => {
                 if (product.sizes && !size) { toast.error("Select a size"); return; }
                 addToCart({ productId: product.id, color: color.name, size, qty });
-                setCartOpen(true);
-                toast.success(`Added ${qty} × ${product.name}`);
+                toast.success(`Added ${qty} x ${product.name} to cart`);
               }}
               className="flex-1 rounded-full bg-primary py-3 font-semibold text-primary-foreground hover:bg-primary/90 transition glow-ring"
             >

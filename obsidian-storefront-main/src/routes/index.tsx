@@ -61,7 +61,7 @@ function Index() {
                 Shop the core <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition" />
               </Link>
               <Link to="/products" search={{ sale: 1 } as never} className="inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold hover:border-primary/60 transition">
-                View drops
+                Discounts
               </Link>
             </div>
 

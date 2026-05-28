@@ -8,9 +8,10 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { Toaster } from "sonner";
+import { ShoppingBag } from "lucide-react";
 
 import appCss from "../styles.css?url";
-import { StoreProvider } from "@/lib/store";
+import { cartTotals, StoreProvider, useStore } from "@/lib/store";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CartDrawer } from "@/components/CartDrawer";
@@ -99,9 +100,30 @@ function RootComponent() {
           <main className="flex-1"><Outlet /></main>
           <Footer />
           <CartDrawer />
+          <FloatingCartButton />
           <Toaster theme="dark" position="bottom-right" />
         </div>
       </StoreProvider>
     </QueryClientProvider>
+  );
+}
+
+function FloatingCartButton() {
+  const { cart, products, setCartOpen } = useStore();
+  const { count } = cartTotals(cart, products);
+
+  if (count === 0) return null;
+
+  return (
+    <button
+      onClick={() => setCartOpen(true)}
+      className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_0_35px_rgb(36_107_255/0.55)] transition hover:bg-primary/90"
+      aria-label="Open cart"
+    >
+      <ShoppingBag className="h-6 w-6" />
+      <span className="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-white px-1 text-xs font-bold text-black">
+        {count}
+      </span>
+    </button>
   );
 }
