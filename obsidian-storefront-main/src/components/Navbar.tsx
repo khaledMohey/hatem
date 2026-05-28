@@ -1,7 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { ShoppingBag, Search, Menu, X } from "lucide-react";
+import { Moon, Search, ShoppingBag, Sun, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useStore, cartTotals } from "@/lib/store";
+import { useTheme } from "@/lib/theme";
 
 const links = [
   { to: "/", label: "Home" },
@@ -15,6 +16,7 @@ export function Navbar() {
   const { count } = cartTotals(cart, products);
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <header className="sticky top-0 z-50 w-full">
@@ -44,6 +46,13 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <button className="hidden sm:flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary transition">
               <Search className="h-4 w-4" />
+            </button>
+            <button
+              onClick={toggleTheme}
+              className="h-9 w-9 flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary transition"
+              aria-label="Toggle light mode"
+            >
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
             <button
               onClick={() => setCartOpen(true)}

@@ -12,6 +12,7 @@ import { ShoppingBag } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { cartTotals, StoreProvider, useStore } from "@/lib/store";
+import { ThemeProvider } from "@/lib/theme";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CartDrawer } from "@/components/CartDrawer";
@@ -94,18 +95,24 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <StoreProvider>
-        <div className="flex min-h-screen flex-col">
-          <Navbar />
-          <main className="flex-1"><Outlet /></main>
-          <Footer />
-          <CartDrawer />
-          <FloatingCartButton />
-          <Toaster theme="dark" position="bottom-right" />
-        </div>
-      </StoreProvider>
+      <ThemeProvider>
+        <StoreProvider>
+          <div className="flex min-h-screen flex-col">
+            <Navbar />
+            <main className="flex-1"><Outlet /></main>
+            <Footer />
+            <CartDrawer />
+            <FloatingCartButton />
+            <ThemedToaster />
+          </div>
+        </StoreProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
+}
+
+function ThemedToaster() {
+  return <Toaster theme="system" position="bottom-right" />;
 }
 
 function FloatingCartButton() {
