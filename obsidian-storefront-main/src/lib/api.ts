@@ -111,3 +111,14 @@ export async function createOrder(payload: CheckoutPayload) {
 export async function fetchOrders(): Promise<Order[]> {
   return request<Order[]>("/orders/", {}, true);
 }
+
+export async function markOrderDone(id: number): Promise<Order> {
+  return request<Order>(
+    `/orders/${id}/`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({ status: "completed" }),
+    },
+    true,
+  );
+}

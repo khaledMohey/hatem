@@ -131,7 +131,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "items",
             "created_at",
         ]
-        read_only_fields = ["id", "status", "total", "created_at"]
+        read_only_fields = ["id", "total", "created_at"]
 
     def get_paymentScreenshot(self, obj: Order) -> str | None:
         if not obj.payment_screenshot:

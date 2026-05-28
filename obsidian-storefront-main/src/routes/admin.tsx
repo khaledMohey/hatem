@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Plus, Pencil, Trash2, Lock } from "lucide-react";
 import { useStore } from "@/lib/store";
-import { fetchOrders, type Order } from "@/lib/api";
+import { fetchOrders, markOrderDone, type Order } from "@/lib/api";
 import { formatCurrency } from "@/lib/money";
 import { categories, type Product } from "@/lib/products";
 import { toast } from "sonner";
@@ -78,6 +78,16 @@ function Dashboard() {
       toast.error("Could not load orders");
     } finally {
       setOrdersLoading(false);
+    }
+  };
+
+  const completeOrder = async (id: number) => {
+    try {
+      const updated = await markOrderDone(id);
+      setOrders((current) => current.map((order) => order.id === id ? updated : order));
+      toast.success(`Order #${id} marked as done`);
+    } catch {
+      toast.error("Could not mark order as done");
     }
   };
 
@@ -190,11 +200,12 @@ function Dashboard() {
                     <th className="text-left p-4">Payment</th>
                     <th className="text-left p-4">Total</th>
                     <th className="text-left p-4">Address</th>
+                    <th className="text-left p-4">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {orders.map((order) => (
-                    <tr key={order.id} className="border-t border-border/40 align-top">
+                    <tr key={order.id} className={`border-t border-border/40 align-top ${order.status === "completed" ? "opacity-60" : ""}`}>
                       <td className="p-4">
                         <p className="font-semibold">#{order.id}</p>
                         <p className="text-xs text-muted-foreground">{new Date(order.created_at).toLocaleString()}</p>
@@ -226,6 +237,18 @@ function Dashboard() {
                       <td className="p-4">
                         <p className="max-w-xs text-xs text-muted-foreground">{order.address}</p>
                         {order.notes && <p className="mt-1 max-w-xs text-xs text-muted-foreground">Notes: {order.notes}</p>}
+                      </td>
+                      <td className="p-4">
+                        {order.status === "completed" ? (
+                          <span className="rounded-full border border-primary/40 px-3 py-1 text-xs font-semibold text-primary">Done</span>
+                        ) : (
+                          <button
+                            onClick={() => void completeOrder(order.id)}
+                            className="rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90"
+                          >
+                            Done
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}
