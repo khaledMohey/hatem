@@ -1,7 +1,9 @@
-from django.db.models import Q
+from django.db.models import ProtectedError, Q
 from django.db.models.functions import Coalesce
 from rest_framework import viewsets
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
+from rest_framework.response import Response
+from rest_framework import status
 
 from .models import Order, Product
 from .permissions import AdminTokenForListOrReadCreate, AdminTokenOrReadOnly
@@ -31,6 +33,17 @@ class ProductViewSet(viewsets.ModelViewSet):
             queryset = queryset.annotate(effective_price=Coalesce("sale_price", "price")).order_by("-effective_price")
 
         return queryset
+
+    def destroy(self, request, *args, **kwargs):
+        product = self.get_object()
+        try:
+            product.delete()
+        except ProtectedError:
+            return Response(
+                {"detail": "This product has orders linked to it. Archive it or set stock to 0 instead of deleting."},
+                status=status.HTTP_409_CONFLICT,
+            )
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class OrderViewSet(viewsets.ModelViewSet):
