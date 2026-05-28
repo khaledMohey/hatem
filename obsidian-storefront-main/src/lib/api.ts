@@ -122,3 +122,11 @@ export async function markOrderDone(id: number): Promise<Order> {
     true,
   );
 }
+
+export async function deleteOrder(id: number): Promise<void> {
+  await request<void>(`/orders/${id}/`, { method: "DELETE" }, true);
+}
+
+export async function clearOrders(): Promise<{ deleted: number }> {
+  return request<{ deleted: number }>("/orders/clear/", { method: "DELETE" }, true);
+}

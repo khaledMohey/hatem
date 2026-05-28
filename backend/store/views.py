@@ -4,6 +4,7 @@ from rest_framework import viewsets
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import action
 
 from .models import Order, Product
 from .permissions import AdminTokenForListOrReadCreate, AdminTokenOrReadOnly
@@ -49,10 +50,15 @@ class ProductViewSet(viewsets.ModelViewSet):
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.prefetch_related("items").all()
     permission_classes = [AdminTokenForListOrReadCreate]
-    http_method_names = ["get", "post", "patch", "head", "options"]
+    http_method_names = ["get", "post", "patch", "delete", "head", "options"]
     parser_classes = [JSONParser, MultiPartParser, FormParser]
 
     def get_serializer_class(self):
         if self.action == "create":
             return OrderCreateSerializer
         return OrderSerializer
+
+    @action(detail=False, methods=["delete"], url_path="clear")
+    def clear(self, request):
+        deleted_count, _ = self.get_queryset().delete()
+        return Response({"deleted": deleted_count}, status=status.HTTP_200_OK)

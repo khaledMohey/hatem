@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Plus, Pencil, Trash2, Lock } from "lucide-react";
 import { useStore } from "@/lib/store";
-import { fetchOrders, markOrderDone, type Order } from "@/lib/api";
+import { clearOrders, deleteOrder, fetchOrders, markOrderDone, type Order } from "@/lib/api";
 import { formatCurrency } from "@/lib/money";
 import { categories, type Product } from "@/lib/products";
 import { toast } from "sonner";
@@ -88,6 +88,28 @@ function Dashboard() {
       toast.success(`Order #${id} marked as done`);
     } catch {
       toast.error("Could not mark order as done");
+    }
+  };
+
+  const removeOrder = async (id: number) => {
+    if (!window.confirm(`Delete order #${id}?`)) return;
+    try {
+      await deleteOrder(id);
+      setOrders((current) => current.filter((order) => order.id !== id));
+      toast.success(`Order #${id} deleted`);
+    } catch {
+      toast.error("Could not delete order");
+    }
+  };
+
+  const removeAllOrders = async () => {
+    if (!window.confirm("Delete all orders? This cannot be undone.")) return;
+    try {
+      const result = await clearOrders();
+      setOrders([]);
+      toast.success(`Deleted ${result.deleted} orders`);
+    } catch {
+      toast.error("Could not delete orders");
     }
   };
 
@@ -182,9 +204,16 @@ function Dashboard() {
               {ordersLoading ? "Loading orders..." : `${orders.length} orders`}
             </p>
           </div>
-          <button onClick={() => void loadOrders()} className="rounded-full border border-border/60 px-4 py-2 text-sm hover:bg-secondary">
-            Refresh
-          </button>
+          <div className="flex gap-2">
+            <button onClick={() => void loadOrders()} className="rounded-full border border-border/60 px-4 py-2 text-sm hover:bg-secondary">
+              Refresh
+            </button>
+            {orders.length > 0 && (
+              <button onClick={() => void removeAllOrders()} className="rounded-full border border-destructive/60 px-4 py-2 text-sm text-destructive hover:bg-destructive/10">
+                Delete all
+              </button>
+            )}
+          </div>
         </div>
         <div className="overflow-hidden rounded-2xl border border-border/60 glass">
           {orders.length === 0 ? (
@@ -249,6 +278,12 @@ function Dashboard() {
                             Done
                           </button>
                         )}
+                        <button
+                          onClick={() => void removeOrder(order.id)}
+                          className="ml-2 rounded-full border border-destructive/60 px-4 py-2 text-xs font-semibold text-destructive hover:bg-destructive/10"
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))}
