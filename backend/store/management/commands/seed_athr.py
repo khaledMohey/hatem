@@ -21,7 +21,7 @@ PRODUCTS = [
         "featured": True,
         "best_seller": True,
         "rating": "4.8",
-        "sizes": ["S", "M", "L", "XL", "XXL"],
+        "sizes": ["S", "M", "L", "XL", "2XL", "3XL"],
         "created_at": "2025-01-12",
         "colors": [
             {"name": "Black", "hex": "#000000", "image": img("photo-1523398002811-999ca8dec234")},
@@ -40,7 +40,7 @@ PRODUCTS = [
         "featured": True,
         "best_seller": True,
         "rating": "4.9",
-        "sizes": ["S", "M", "L", "XL", "XXL"],
+        "sizes": ["S", "M", "L", "XL", "2XL", "3XL"],
         "created_at": "2025-03-02",
         "colors": [
             {"name": "Black", "hex": "#000000", "image": img("photo-1521572163474-6864f9cf17ab")},
@@ -58,7 +58,7 @@ PRODUCTS = [
         "featured": True,
         "best_seller": False,
         "rating": "4.6",
-        "sizes": ["S", "M", "L", "XL"],
+        "sizes": ["S", "M", "L", "XL", "2XL", "3XL"],
         "created_at": "2025-02-20",
         "colors": [
             {"name": "Black", "hex": "#000000", "image": img("photo-1515886657613-9f3515b0c78f")},
@@ -77,7 +77,7 @@ PRODUCTS = [
         "featured": True,
         "best_seller": True,
         "rating": "4.7",
-        "sizes": ["S", "M", "L", "XL"],
+        "sizes": ["S", "M", "L", "XL", "2XL", "3XL"],
         "created_at": "2025-04-05",
         "colors": [
             {"name": "Black", "hex": "#000000", "image": img("photo-1489987707025-afc232f7ea0f")},
@@ -95,7 +95,7 @@ PRODUCTS = [
         "featured": False,
         "best_seller": True,
         "rating": "4.8",
-        "sizes": ["S", "M", "L", "XL"],
+        "sizes": ["S", "M", "L", "XL", "2XL", "3XL"],
         "created_at": "2025-05-01",
         "colors": [
             {"name": "Black", "hex": "#000000", "image": img("photo-1529139574466-a303027c1d8b")},
@@ -131,7 +131,7 @@ PRODUCTS = [
         "featured": True,
         "best_seller": False,
         "rating": "4.7",
-        "sizes": ["S", "M", "L", "XL", "XXL"],
+        "sizes": ["S", "M", "L", "XL", "2XL", "3XL"],
         "created_at": "2025-03-18",
         "colors": [
             {"name": "Black", "hex": "#000000", "image": img("photo-1562157873-818bc0726f68")},

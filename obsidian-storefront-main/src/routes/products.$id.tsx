@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Star, Minus, Plus, Heart, Truck, Shield, RotateCcw } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { ProductCard } from "@/components/ProductCard";
@@ -22,6 +22,8 @@ function ProductDetail() {
   const product = products.find((p) => p.id === id);
   const [colorIdx, setColorIdx] = useState(0);
   const [size, setSize] = useState<string | undefined>(undefined);
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
   const [qty, setQty] = useState(1);
 
   if (!product) throw notFound();
@@ -29,6 +31,11 @@ function ProductDetail() {
   const onSale = !!product.salePrice;
   const wished = wishlist.includes(product.id);
   const related = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
+  const recommendedSize = getRecommendedSize(Number(height), Number(weight), product.sizes);
+
+  useEffect(() => {
+    if (recommendedSize) setSize(recommendedSize);
+  }, [recommendedSize]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10">
@@ -71,7 +78,7 @@ function ProductDetail() {
                   <Star key={i} className={`h-4 w-4 ${i < Math.round(product.rating) ? "fill-primary text-primary" : "text-muted"}`} />
                 ))}
               </div>
-              <span className="text-muted-foreground">{product.rating} · {product.stock} in stock</span>
+              <span className="text-muted-foreground">{product.rating}</span>
             </div>
           </div>
 
@@ -104,7 +111,30 @@ function ProductDetail() {
           </div>
 
           {product.sizes && (
-            <div>
+            <div className="space-y-3">
+              <div className="rounded-2xl border border-border/60 bg-card/40 p-3">
+                <p className="text-sm font-semibold">Find your size</p>
+                <p className="mt-1 text-xs text-muted-foreground">Enter your height and weight and we will select the best size for you.</p>
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                  <input
+                    type="number"
+                    value={height}
+                    onChange={(e) => setHeight(e.target.value)}
+                    placeholder="Height (cm)"
+                    className="w-full rounded-lg bg-input border border-border/60 px-3 py-2 text-sm focus:border-primary focus:outline-none"
+                  />
+                  <input
+                    type="number"
+                    value={weight}
+                    onChange={(e) => setWeight(e.target.value)}
+                    placeholder="Weight (kg)"
+                    className="w-full rounded-lg bg-input border border-border/60 px-3 py-2 text-sm focus:border-primary focus:outline-none"
+                  />
+                </div>
+                {recommendedSize && (
+                  <p className="mt-2 text-xs text-primary">Recommended size: <span className="font-semibold">{recommendedSize}</span></p>
+                )}
+              </div>
               <p className="text-sm font-semibold mb-2">Size</p>
               <div className="flex flex-wrap gap-2">
                 {product.sizes.map((s) => (
@@ -167,3 +197,18 @@ function ProductDetail() {
     </div>
   );
 }
+
+function getRecommendedSize(height: number, weight: number, availableSizes?: string[]) {
+  if (!height || !weight || !availableSizes?.length) return undefined;
+  const target =
+    height < 165 && weight < 60 ? "S" :
+    height < 173 && weight < 75 ? "M" :
+    height < 180 && weight < 88 ? "L" :
+    height < 188 && weight < 102 ? "XL" :
+    height < 195 && weight < 116 ? "2XL" :
+    "3XL";
+  const targetIndex = SIZE_ORDER.indexOf(target);
+  return availableSizes.find((size) => SIZE_ORDER.indexOf(size) >= targetIndex) ?? availableSizes[availableSizes.length - 1];
+}
+
+const SIZE_ORDER = ["S", "M", "L", "XL", "2XL", "3XL"];

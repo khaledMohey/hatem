@@ -4,7 +4,7 @@ import { Plus, Pencil, Trash2, Lock } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { clearOrders, deleteOrder, fetchOrders, markOrderDone, type Order } from "@/lib/api";
 import { formatCurrency } from "@/lib/money";
-import { categories, type Product } from "@/lib/products";
+import { categories, SIZE_OPTIONS, type Product } from "@/lib/products";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin")({
@@ -59,7 +59,7 @@ function emptyProduct(): Product {
   return {
     id: crypto.randomUUID().slice(0, 8),
     name: "", description: "", price: 0, colors: [{ name: "Default", hex: "#000000", image: "" }],
-    images: [], category: categories[0], stock: 0, featured: false, rating: 5,
+    images: [], category: categories[0], stock: 0, featured: false, rating: 5, sizes: SIZE_OPTIONS,
     createdAt: new Date().toISOString().slice(0, 10),
   };
 }
@@ -322,6 +322,29 @@ function EditModal({ product, onClose, onSave }: { product: Product; onClose: ()
         </div>
 
         <Field label="Description"><textarea value={p.description} onChange={(e) => upd("description", e.target.value)} rows={3} className={inputCls} /></Field>
+
+        <Field label="Available sizes">
+          <div className="flex flex-wrap gap-2">
+            {SIZE_OPTIONS.map((size) => {
+              const selected = p.sizes?.includes(size) ?? false;
+              return (
+                <button
+                  key={size}
+                  type="button"
+                  onClick={() => {
+                    const current = p.sizes ?? [];
+                    upd("sizes", selected ? current.filter((x) => x !== size) : [...current, size]);
+                  }}
+                  className={`min-w-12 rounded-full border px-3 py-2 text-sm font-semibold transition ${
+                    selected ? "border-primary bg-primary/10 text-primary" : "border-border/60 text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {size}
+                </button>
+              );
+            })}
+          </div>
+        </Field>
 
         <Field label="Colors (name, hex, image URL)">
           <div className="space-y-2">

@@ -24,8 +24,17 @@ export function Footer() {
           </div>
         ))}
       </div>
-      <div className="border-t border-border/40 py-5 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} ATHR CORE — Leave your mark.
+      <div className="border-t border-border/40 py-5">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 text-center text-xs text-muted-foreground sm:flex-row sm:px-6 sm:text-left">
+          <p>© {new Date().getFullYear()} ATHR CORE — Leave your mark.</p>
+          <div className="flex items-center gap-3">
+            <img src="/ak-tech-logo.png" alt="AK Tech logo" className="h-10 w-10 object-contain" />
+            <div>
+              <p className="font-semibold text-foreground">Created by AK Tech Company</p>
+              <p>01010380701</p>
+            </div>
+          </div>
+        </div>
       </div>
     </footer>
   );

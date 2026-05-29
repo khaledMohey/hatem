@@ -8,6 +8,7 @@ const links = [
   { to: "/", label: "Home" },
   { to: "/products", label: "Shop" },
   { to: "/products?category=T-Shirt", label: "T-Shirt" },
+  { to: "/products?category=Hoodies", label: "Hoodies" },
   { to: "/products?sale=1", label: "Sale" },
 ];
 

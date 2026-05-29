@@ -102,6 +102,7 @@ function RootComponent() {
             <main className="flex-1"><Outlet /></main>
             <Footer />
             <CartDrawer />
+            <FloatingShopNow />
             <FloatingCartButton />
             <ThemedToaster />
           </div>
@@ -113,6 +114,17 @@ function RootComponent() {
 
 function ThemedToaster() {
   return <Toaster theme="system" position="bottom-right" />;
+}
+
+function FloatingShopNow() {
+  return (
+    <Link
+      to="/products"
+      className="fixed bottom-5 left-5 z-50 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[0_0_35px_rgb(36_107_255/0.45)] transition hover:bg-primary/90"
+    >
+      Shop Now
+    </Link>
+  );
 }
 
 function FloatingCartButton() {

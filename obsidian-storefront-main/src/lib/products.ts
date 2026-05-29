@@ -16,6 +16,8 @@ export type Product = {
   createdAt: string;
 };
 
+export const SIZE_OPTIONS = ["S", "M", "L", "XL", "2XL", "3XL"];
+
 const img = (id: string) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=900&q=80`;
 
 export const seedProducts: Product[] = [
@@ -31,7 +33,7 @@ export const seedProducts: Product[] = [
     ],
     images: [img("photo-1523398002811-999ca8dec234"), img("photo-1556821840-3a63f95609a7"), img("photo-1503342217505-b0a15ec3261c")],
     category: "T-Shirt", stock: 24, featured: true, bestSeller: true, rating: 4.8,
-    sizes: ["S", "M", "L", "XL", "XXL"],
+    sizes: ["S", "M", "L", "XL", "2XL", "3XL"],
     createdAt: "2025-01-12",
   },
   {
@@ -45,7 +47,7 @@ export const seedProducts: Product[] = [
     ],
     images: [img("photo-1521572163474-6864f9cf17ab"), img("photo-1503341504253-dff4815485f1")],
     category: "T-Shirt", stock: 48, featured: true, bestSeller: true, rating: 4.9,
-    sizes: ["S", "M", "L", "XL", "XXL"],
+    sizes: ["S", "M", "L", "XL", "2XL", "3XL"],
     createdAt: "2025-03-02",
   },
   {
@@ -60,7 +62,7 @@ export const seedProducts: Product[] = [
     ],
     images: [img("photo-1515886657613-9f3515b0c78f"), img("photo-1548883354-94bcfe321cbb")],
     category: "T-Shirt", stock: 60, featured: true, rating: 4.6,
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "2XL", "3XL"],
     createdAt: "2025-02-20",
   },
   {
@@ -74,7 +76,7 @@ export const seedProducts: Product[] = [
     ],
     images: [img("photo-1489987707025-afc232f7ea0f"), img("photo-1520975954732-35dd22299614")],
     category: "T-Shirt", stock: 30, featured: true, bestSeller: true, rating: 4.7,
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "2XL", "3XL"],
     createdAt: "2025-04-05",
   },
   {
@@ -88,7 +90,7 @@ export const seedProducts: Product[] = [
     ],
     images: [img("photo-1529139574466-a303027c1d8b"), img("photo-1506629905607-d9e297d6fb9d")],
     category: "T-Shirt", stock: 80, featured: false, bestSeller: true, rating: 4.8,
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "2XL", "3XL"],
     createdAt: "2025-05-01",
   },
   {
@@ -115,7 +117,7 @@ export const seedProducts: Product[] = [
     ],
     images: [img("photo-1562157873-818bc0726f68"), img("photo-1523381210434-271e8be1f52b")],
     category: "T-Shirt", stock: 35, featured: true, rating: 4.7,
-    sizes: ["S", "M", "L", "XL", "XXL"],
+    sizes: ["S", "M", "L", "XL", "2XL", "3XL"],
     createdAt: "2025-03-18",
   },
   {
@@ -133,7 +135,7 @@ export const seedProducts: Product[] = [
   },
 ];
 
-export const categories = ["T-Shirt"];
+export const categories = ["T-Shirt", "Hoodies"];
 
 const KEY = "athr_products_v1";
 export function loadProducts(): Product[] {

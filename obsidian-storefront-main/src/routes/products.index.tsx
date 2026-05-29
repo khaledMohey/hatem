@@ -28,8 +28,10 @@ function ProductsPage() {
   const navigate = Route.useNavigate();
   const [q, setQ] = useState(search.q ?? "");
   const [sort, setSort] = useState<"new" | "low" | "high">("new");
+  const hoodiesSelected = search.category === "Hoodies";
 
   const filtered = useMemo(() => {
+    if (search.category === "Hoodies") return [];
     let r = products;
     if (search.category) r = r.filter((p) => p.category === search.category);
     if (search.sale) r = r.filter((p) => p.salePrice);
@@ -45,7 +47,9 @@ function ProductsPage() {
         <h1 className="font-display text-4xl font-bold">
           {search.sale ? "Sale" : search.category ?? "All products"}
         </h1>
-        <p className="text-muted-foreground mt-1">{filtered.length} products</p>
+        <p className="text-muted-foreground mt-1">
+          {hoodiesSelected ? "Sold out" : `${filtered.length} products`}
+        </p>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-6">
@@ -102,7 +106,12 @@ function ProductsPage() {
         </aside>
 
         <div className="flex-1">
-          {filtered.length === 0 ? (
+          {hoodiesSelected ? (
+            <div className="rounded-3xl border border-border/60 glass px-6 py-20 text-center">
+              <p className="font-display text-4xl font-bold text-gradient">Sold out</p>
+              <p className="mt-3 text-sm text-muted-foreground">Hoodies are not available right now. Check back soon.</p>
+            </div>
+          ) : filtered.length === 0 ? (
             <div className="text-center py-20 text-muted-foreground">No products match your filters.</div>
           ) : (
             <div className="grid gap-5 grid-cols-2 lg:grid-cols-3">

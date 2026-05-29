@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ShoppingBag, Zap, Truck, Shield } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { ProductCard } from "@/components/ProductCard";
+import { categories } from "@/lib/products";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -17,6 +18,7 @@ export const Route = createFileRoute("/")({
 
 const catIcons: Record<string, typeof ShoppingBag> = {
   "T-Shirt": ShoppingBag,
+  Hoodies: ShoppingBag,
 };
 
 function Index() {
@@ -24,7 +26,7 @@ function Index() {
   const featured = products.filter((p) => p.featured);
   const bestSellers = products.filter((p) => p.bestSeller);
   const onSale = products.filter((p) => p.salePrice);
-  const cats = Array.from(new Set(products.map((p) => p.category)));
+  const cats = categories;
 
   return (
     <div>
@@ -58,7 +60,7 @@ function Index() {
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
               <Link to="/products" className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition glow-ring">
-                Shop the core <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition" />
+                Shop Now <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition" />
               </Link>
               <Link to="/products" search={{ sale: 1 } as never} className="inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold hover:border-primary/60 transition">
                 Discounts
