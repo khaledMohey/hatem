@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { ArrowRight, ShoppingBag, Zap, Truck, Shield } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { ProductCard } from "@/components/ProductCard";
@@ -21,6 +22,14 @@ const catIcons: Record<string, typeof ShoppingBag> = {
   Hoodies: ShoppingBag,
 };
 
+const heroSlides = [
+  "/athr-slide-1.png",
+  "/athr-slide-2.png",
+  "/athr-slide-3.png",
+  "/athr-slide-4.png",
+  "/athr-slide-5.png",
+];
+
 function Index() {
   const { products } = useStore();
   const featured = products.filter((p) => p.featured);
@@ -30,6 +39,8 @@ function Index() {
 
   return (
     <div>
+      <HeroCarousel />
+
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-white/10">
         <div className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
@@ -145,6 +156,51 @@ function Index() {
       {/* Best sellers */}
       <ProductRow title="Best sellers" subtitle="Clean silhouettes people keep reaching for." items={bestSellers} />
     </div>
+  );
+}
+
+function HeroCarousel() {
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActive((current) => (current + 1) % heroSlides.length);
+    }, 3500);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  return (
+    <section className="relative h-[78vh] min-h-[520px] w-full overflow-hidden border-b border-border/40 sm:h-[88vh]">
+      {heroSlides.map((src, index) => (
+        <img
+          key={src}
+          src={src}
+          alt={`ATHR campaign slide ${index + 1}`}
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
+            active === index ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      ))}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-black/20" />
+      <div className="absolute inset-x-0 bottom-8 mx-auto flex max-w-7xl items-end justify-between gap-4 px-4 sm:px-6">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">ATHR CORE</p>
+          <h1 className="mt-2 max-w-2xl font-display text-4xl font-bold uppercase leading-none tracking-[0.08em] text-white sm:text-6xl">
+            Leave Your Mark
+          </h1>
+        </div>
+        <div className="hidden gap-2 sm:flex">
+          {heroSlides.map((src, index) => (
+            <button
+              key={src}
+              onClick={() => setActive(index)}
+              className={`h-1.5 rounded-full transition-all ${active === index ? "w-10 bg-primary" : "w-5 bg-white/45"}`}
+              aria-label={`Show slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
